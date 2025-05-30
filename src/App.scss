@@ -1,0 +1,15 @@
+// @import './styles/variables'; 
+
+.App {
+    text-align: center;
+  }
+  
+  .custom-paragraph {
+    color: navy;
+    font-size: 1.2rem;
+    margin-top: 20px;
+  
+    &:hover {
+      color: darkcyan;
+    }
+  }
