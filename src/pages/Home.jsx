@@ -17,6 +17,7 @@ import EmptyData from "../components/layout/EmptyData";
 const Home = () => {
   const [karyawanList, setKaryawanList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingSave, setLoadingSave] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
@@ -37,6 +38,19 @@ const Home = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+  
+  const createKaryawan = async (params) => {
+    try {
+      setLoadingSave(true);
+      setError(null);
+      const data = await employeeService.createEmployee(params);
+      setKaryawanList(data.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingSave(false);
     }
   };
 
@@ -64,8 +78,7 @@ const Home = () => {
 
   const handleFormSubmit = (formData) => {
     console.log('Data dari Form Karyawan:', formData);
-    // Di sini Anda bisa mengirim data ke backend menggunakan Axios
-    // misalnya: employeeService.createEmployee(formData) atau .updateEmployee(id, formData)
+    createKaryawan(formData);
   };
 
   const handleDisplayID = () => {

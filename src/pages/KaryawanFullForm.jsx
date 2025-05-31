@@ -15,7 +15,7 @@ const tipeKaryawanOptions = [
 
 const karyawanFullSchema = Yup.object().shape({
   nama_lengkap: Yup.string().required('Nama Lengkap wajib diisi.'),
-  no_kartu_identitas: Yup.string().required('No. Kartu Identitas wajib diisi.').matches(/^[0-9]{16}$/, 'Nomor KTP/NIK harus 16 digit angka.'),
+  no_ktp_nik: Yup.string().required('No. Kartu Identitas wajib diisi.').matches(/^[0-9]{16}$/, 'Nomor KTP/NIK harus 16 digit angka.'),
   jenis_kelamin: Yup.string().required('Jenis Kelamin wajib dipilih.'),
   status: Yup.string().required('Status wajib dipilih.'),
   tempat_lahir: Yup.string().optional(),
@@ -26,7 +26,7 @@ const karyawanFullSchema = Yup.object().shape({
   detail_alamat: Yup.string().optional(), username: Yup.string().required('Username wajib diisi.').min(3, 'Username minimal 3 karakter.'),
   email: Yup.string().email('Format email tidak valid.').required('Email wajib diisi.'),
   password: Yup.string().required('Password wajib diisi.').min(6, 'Password minimal 6 karakter.'),
-  tipe: Yup.string().required('Tipe wajib dipilih.'),
+  tipe_karyawan: Yup.string().required('Tipe wajib dipilih.'),
   tipe_lainnya: Yup.string().when('tipe', {
     is: 'Lainnya',
     then: schema => schema.required('Detail tipe lainnya wajib diisi.'),
@@ -44,12 +44,12 @@ const karyawanFullSchema = Yup.object().shape({
 
 const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false }) => {
   const [formData, setFormData] = useState({
-    nama_lengkap: '', no_kartu_identitas: '', jenis_kelamin: '', tempat_lahir: '',
+    nama_lengkap: '', no_ktp_nik: '', jenis_kelamin: '', tempat_lahir: '',
     tanggal_lahir: '', no_telepon: '', provinsi: '', kota_kabupaten: '',
     kecamatan: '', kelurahan: '', detail_alamat: '', username: '', email: '',
     password: '',
     status: '',
-    tipe: '',
+    tipe_karyawan: '',
     tipe_lainnya: '',
     tanggal_mulai_kontrak: '', tanggal_selesai_kontrak: '',
     status_menikah: '', kode_dokter_bpjs: '',
@@ -66,7 +66,7 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
       setFormData(prev => ({
         // ... (mapping initialData lain tetap sama) ...
         nama_lengkap: initialData.nama_lengkap || '',
-        no_kartu_identitas: initialData.no_kartu_identitas || '',
+        no_ktp_nik: initialData.no_ktp_nik || '',
         jenis_kelamin: initialData.jenis_kelamin || '',
         tempat_lahir: initialData.tempat_lahir || '',
         tanggal_lahir: initialData.tanggal_lahir ? initialData.tanggal_lahir.split('T')[0] : '',
@@ -80,7 +80,7 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
         email: initialData.email || '',
         password: '',
         status: initialData.status || '',
-        tipe: initialData.tipe || '', // Langsung string, bukan array
+        tipe_karyawan: initialData.tipe || '', // Langsung string, bukan array
         tipe_lainnya: initialData.tipe_lainnya || '',
         tanggal_mulai_kontrak: initialData.tanggal_mulai_kontrak ? initialData.tanggal_mulai_kontrak.split('T')[0] : '',
         tanggal_selesai_kontrak: initialData.tanggal_selesai_kontrak ? initialData.tanggal_selesai_kontrak.split('T')[0] : '',
@@ -251,14 +251,14 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
             </Form.Label>
             <Form.Control
               type="text"
-              name="no_kartu_identitas"
+              name="no_ktp_nik"
               placeholder="No. Kartu Identitas"
-              value={formData.no_kartu_identitas}
+              value={formData.no_ktp_nik}
               onChange={handleChange}
-              isInvalid={!!errors.no_kartu_identitas}
+              isInvalid={!!errors.no_ktp_nik}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.no_kartu_identitas}
+              {errors.no_ktp_nik}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formJenisKelamin">
@@ -271,8 +271,8 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
                 type="radio"
                 label="Laki-laki"
                 name="jenis_kelamin"
-                value="LAKI_LAKI"
-                checked={formData.jenis_kelamin === "LAKI_LAKI"}
+                value="Laki-laki"
+                checked={formData.jenis_kelamin === "Laki-laki"}
                 onChange={handleTipeRadioChange}
                 id="radio-lk"
                 isInvalid={!!errors.jenis_kelamin && !formData.jenis_kelamin}
@@ -282,8 +282,8 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
                 type="radio"
                 label="Perempuan"
                 name="jenis_kelamin"
-                value="PEREMPUAN"
-                checked={formData.jenis_kelamin === "PEREMPUAN"}
+                value="Perempuan"
+                checked={formData.jenis_kelamin === "Perempuan"}
                 onChange={handleTipeRadioChange}
                 id="radio-pr"
                 isInvalid={!!errors.jenis_kelamin && !formData.jenis_kelamin}
@@ -564,12 +564,12 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
                       <Form.Check
                         type="radio" // <<<< BERUBAH
                         label={opt.label}
-                        name="tipe" // <<<< Semua radio button dalam grup harus punya 'name' yang sama
+                        name="tipe_karyawan" // <<<< Semua radio button dalam grup harus punya 'name' yang sama
                         value={opt.value}
-                        checked={formData.tipe === opt.value} // <<<< Perbandingan langsung dengan formData.tipe
+                        checked={formData.tipe_karyawan === opt.value} // <<<< Perbandingan langsung dengan formData.tipe
                         onChange={handleTipeRadioChange} // <<<< Gunakan handler baru
                         id={`radio-tipe-${opt.value}`}
-                        isInvalid={!!errors.tipe && !formData.tipe} // Feedback jika belum dipilih
+                        isInvalid={!!errors.tipe_karyawan && !formData.tipe_karyawan} // Feedback jika belum dipilih
                       />
                     </Col>
                   ))}
@@ -579,12 +579,12 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
                   <Form.Check
                     type="radio" // <<<< BERUBAH
                     label="Lainnya"
-                    name="tipe"
+                    name="tipe_karyawan"
                     value="Lainnya" // Value spesifik untuk opsi "Lainnya"
-                    checked={formData.tipe === "Lainnya"}
+                    checked={formData.tipe_karyawan === "Lainnya"}
                     onChange={handleTipeRadioChange}
                     id="radio-tipe-lainnya"
-                    isInvalid={!!errors.tipe && !formData.tipe}
+                    isInvalid={!!errors.tipe_karyawan && !formData.tipe_karyawan}
                   />
                 </Col>
                 <Col xs={6} sm={8}>

@@ -73,9 +73,7 @@ const getEmployeeById = async (employeeId) => {
  */
 const createEmployee = async (employeeData) => {
   try {
-    // Untuk FormData (jika ada file upload), Axios akan otomatis mengatur Content-Type
-    // Jika bukan FormData, Content-Type default dari apiClient (application/json) akan digunakan.
-    const response = await apiClient.post("/employees", employeeData);
+    const response = await apiClient.post("/employee", employeeData);
     return response.data.data || response.data;
   } catch (error) {
     console.error("Error creating employee:", error.response || error.message);
