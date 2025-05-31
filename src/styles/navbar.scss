@@ -1,0 +1,36 @@
+.appNavbar{
+    height: 7vh;
+    background: #ffffff;
+}
+
+.container-navbar{
+    position: relative;
+    // border: solid;
+    .logo{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: translate(1050%, 13%);
+        width: fit-content;
+        font-weight: 500;
+    }
+    .profile{
+        border-radius: 99%;
+    }
+
+    .text-profile{
+        // border: solid;
+        line-height: normal;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .text-desc{
+        font-weight: 400;
+        font-size: 14px;
+    }
+    .brand{
+        font-size: medium;
+    }
+}

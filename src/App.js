@@ -1,21 +1,21 @@
 import React from 'react';
 import './App.scss';
-import { Button, Container, Alert } from 'react-bootstrap';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./layouts/Layout";
+import NoPage from "./layouts/NoPage";
+import Home from "./pages/Home";
+
 
 function App() {
   return (
-    <div className="App">
-      <Container className="mt-5">
-        <Alert variant="success">
-          Setup Frontend Medeva Berhasil!
-        </Alert>
-        <h1>Selamat Datang di Aplikasi Karyawan Medeva</h1>
-        <p className="custom-paragraph">
-          Ini adalah contoh penggunaan Bootstrap dan SCSS.
-        </p>
-        <Button variant="primary">Tombol Bootstrap</Button>
-      </Container>
-    </div>
+      <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="*" element={<NoPage />} />
+            </Route>
+          </Routes>
+      </BrowserRouter>
   );
 }
 
