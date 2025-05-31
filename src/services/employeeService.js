@@ -50,7 +50,7 @@ const getAllEmployees = async (param) => {
  */
 const getEmployeeById = async (employeeId) => {
   try {
-    const response = await apiClient.get(`/employees/${employeeId}`);
+    const response = await apiClient.get(`/employee/${employeeId}`);
     return response.data.data || response.data;
   } catch (error) {
     console.error(

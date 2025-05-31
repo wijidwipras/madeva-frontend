@@ -13,6 +13,7 @@ import React, { useState, useEffect } from "react";
 import { employeeService } from "../services/employeeService";
 import KaryawanFullForm from "./KaryawanFullForm";
 import EmptyData from "../components/layout/EmptyData";
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const [karyawanList, setKaryawanList] = useState([]);
@@ -41,14 +42,49 @@ const Home = () => {
     }
   };
   
+  const fetchKaryawanByID = async (id) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await employeeService.getEmployeeById(id);
+      setKaryawanList(data.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createKaryawan = async (params) => {
     try {
       setLoadingSave(true);
       setError(null);
       const data = await employeeService.createEmployee(params);
-      setKaryawanList(data.data);
+      if (data) {
+        toast("Berhasil menambah data", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          })
+        fetchKaryawan(filter)
+      }
     } catch (err) {
       setError(err.message);
+      toast.error(`Opps ${err}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        })
     } finally {
       setLoadingSave(false);
     }
@@ -59,7 +95,7 @@ const Home = () => {
   }, []);
 
 
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
+  // if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
 
   const handleFilterChange = (newFilter) => {
     setStatus(newFilter.toLowerCase())
@@ -125,7 +161,7 @@ const Home = () => {
 
                 <p className="title-child">Status</p>
                 <StatusFilter
-                  defaultStatus="AKTIF"
+                  defaultStatus="SEMUA"
                   onFilterChange={handleFilterChange}
                 />
 

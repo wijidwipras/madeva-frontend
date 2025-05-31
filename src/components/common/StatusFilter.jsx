@@ -7,7 +7,7 @@ const FILTER_OPTIONS = {
   NON_AKTIF: 'NON-AKTIF',
 };
 
-const StatusFilter = ({ defaultStatus = FILTER_OPTIONS.AKTIF, onFilterChange }) => {
+const StatusFilter = ({ defaultStatus = FILTER_OPTIONS.SEMUA, onFilterChange }) => {
   const [activeFilter, setActiveFilter] = useState(defaultStatus);
 
   const handleFilterClick = (filter) => {
