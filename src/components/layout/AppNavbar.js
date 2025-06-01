@@ -8,9 +8,17 @@ import { Image } from 'react-bootstrap';
 import { useState } from 'react';
 import { CiBellOn } from "react-icons/ci";
 import LogoProfile from '../../assets/logo-ico-madeva.png'
+import { authService } from '../../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 function AppNavbar() {
   const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    authService.logout();
+    navigate('/login');
+  };
+
   return (
     <Navbar collapseOnSelect expand="lg" className="appNavbar bg-body-tertiary shadow-sm">
       <Container fluid className='container-navbar'>
@@ -64,7 +72,7 @@ function AppNavbar() {
               <NavDropdown.Item href="#profile">Profile</NavDropdown.Item>
               <NavDropdown.Item href="#settings">Settings</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#logout">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

@@ -9,10 +9,11 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    console.log('Request Config:', config);
     return config;
   },
   (error) => {
@@ -25,8 +26,12 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    // Handle error
-    // ex: redirect ke login jika 401 Unauthorized
+    console.error('API Error Response:', error.response);
+    if (error.response && error.response.status === 401) {
+      console.log('Unauthorized access or token expired, logging out...');
+      localStorage.removeItem('authToken');
+      window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );
