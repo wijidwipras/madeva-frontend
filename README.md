@@ -49,20 +49,14 @@ Proyek ini mencoba mengikuti prinsip Clean Architecture [cite: 2] dengan pemisah
 src/
 ├── assets/             # Gambar, font, dll.
 ├── components/         # Komponen UI reusable (common, forms, layout, ui)
-├── config/             # Konfigurasi (mis. instance Axios)
-├── constants/          # Konstanta aplikasi
-├── domains/            # Skema Yup, definisi entitas/model data frontend
-├── hooks/              # Custom React Hooks (mis. untuk state management sederhana, API calls)
 ├── layouts/            # Komponen yang mendefinisikan struktur halaman utama (mis. MainLayout, AuthLayout)
 ├── pages/              # Komponen yang mewakili satu halaman (mis. LoginPage, KaryawanListPage)
-├── services/           # Modul untuk interaksi API (menggunakan Axios)
-├── store/              # (Opsional, jika pakai state management seperti Redux/Zustand)
+├── services/           # Modul untuk interaksi API (menggunakan Axios), Konfigurasi (mis. instance Axios)
 ├── styles/             # File SCSS global, variabel, mixins
 ├── utils/              # Fungsi utilitas helper
 ├── App.js              # Komponen utama aplikasi, routing
 ├── App.scss            # Styling utama untuk App.js
 └── index.js            # Titik masuk aplikasi React
-
 ```
 
 ## Alur Kerja Otentikasi (Dummy)
