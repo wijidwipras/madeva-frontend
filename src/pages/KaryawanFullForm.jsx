@@ -13,40 +13,11 @@ const tipeKaryawanOptions = [
   { value: 'Bidan', label: 'Bidan' }, { value: 'Dokter', label: 'Dokter' },
 ];
 
-const karyawanFullSchema = Yup.object().shape({
-  nama_lengkap: Yup.string().required('Nama Lengkap wajib diisi.'),
-  no_ktp_nik: Yup.string().required('No. Kartu Identitas wajib diisi.').matches(/^[0-9]{16}$/, 'Nomor KTP/NIK harus 16 digit angka.'),
-  jenis_kelamin: Yup.string().required('Jenis Kelamin wajib dipilih.'),
-  status: Yup.string().required('Status wajib dipilih.'),
-  tempat_lahir: Yup.string().optional(),
-  tanggal_lahir: Yup.date().optional().nullable().typeError('Format tanggal tidak valid.'),
-  no_telepon: Yup.string().optional().matches(/^[0-9-+() ]*$/, 'Nomor telepon tidak valid.'),
-  provinsi: Yup.string().optional(), kota_kabupaten: Yup.string().optional(),
-  kecamatan: Yup.string().optional(), kelurahan: Yup.string().optional(),
-  detail_alamat: Yup.string().optional(), username: Yup.string().required('Username wajib diisi.').min(3, 'Username minimal 3 karakter.'),
-  email: Yup.string().email('Format email tidak valid.').required('Email wajib diisi.'),
-  password: Yup.string().required('Password wajib diisi.').min(6, 'Password minimal 6 karakter.'),
-  tipe_karyawan: Yup.string().required('Tipe wajib dipilih.'),
-  tipe_lainnya: Yup.string().when('tipe', {
-    is: 'Lainnya',
-    then: schema => schema.required('Detail tipe lainnya wajib diisi.'),
-    otherwise: schema => schema.optional().nullable(),
-  }),
-
-  tanggal_mulai_kontrak: Yup.date().optional().nullable().typeError('Format tanggal tidak valid.'),
-  tanggal_selesai_kontrak: Yup.date().optional().nullable().typeError('Format tanggal tidak valid.')
-    .when('tanggal_mulai_kontrak', (tanggal_mulai_kontrak, schema) => {
-        return tanggal_mulai_kontrak ? schema.min(Yup.ref('tanggal_mulai_kontrak'), 'Tgl selesai tidak boleh sebelum tgl mulai') : schema;
-    }),
-  status_menikah: Yup.string().optional(),
-  kode_dokter_bpjs: Yup.string().optional(),
-});
-
-const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false }) => {
+const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false, isUpdate = false }) => {
   const [formData, setFormData] = useState({
     nama_lengkap: '', no_ktp_nik: '', jenis_kelamin: '', tempat_lahir: '',
     tanggal_lahir: '', no_telepon: '', provinsi: '', kota_kabupaten: '',
-    kecamatan: '', kelurahan: '', detail_alamat: '', username: '', email: '',
+    kecamatan: '', kelurahan: '', alamat: '', username: '', email: '',
     password: '',
     status: '',
     tipe_karyawan: '',
@@ -60,6 +31,35 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
   const [cityOptions, setCityOptions] = useState([]);
   const [districtOptions, setDistrictOptions] = useState([]);
   const [villageOptions, setVillageOptions] = useState([]);
+
+  const karyawanFullSchema = Yup.object().shape({
+    nama_lengkap: Yup.string().required('Nama Lengkap wajib diisi.'),
+    no_ktp_nik: Yup.string().required('No. Kartu Identitas wajib diisi.').matches(/^[0-9]{16}$/, 'Nomor KTP/NIK harus 16 digit angka.'),
+    jenis_kelamin: Yup.string().required('Jenis Kelamin wajib dipilih.'),
+    status: Yup.string().required('Status wajib dipilih.'),
+    tempat_lahir: Yup.string().optional(),
+    tanggal_lahir: Yup.date().optional().nullable().typeError('Format tanggal tidak valid.'),
+    no_telepon: Yup.string().optional().matches(/^[0-9-+() ]*$/, 'Nomor telepon tidak valid.'),
+    provinsi: Yup.string().optional(), kota_kabupaten: Yup.string().optional(),
+    kecamatan: Yup.string().optional(), kelurahan: Yup.string().optional(),
+    alamat: Yup.string().optional(), username: Yup.string().required('Username wajib diisi.').min(3, 'Username minimal 3 karakter.'),
+    email: Yup.string().email('Format email tidak valid.').required('Email wajib diisi.'),
+    password: isUpdate ? Yup.string().optional().nullable() : Yup.string().required('Password wajib diisi.').min(6, 'Password minimal 6 karakter.'),
+    tipe_karyawan: Yup.string().required('Tipe wajib dipilih.'),
+    tipe_lainnya: Yup.string().when('tipe', {
+      is: 'Lainnya',
+      then: schema => schema.required('Detail tipe lainnya wajib diisi.'),
+      otherwise: schema => schema.optional().nullable(),
+    }),
+  
+    tanggal_mulai_kontrak: Yup.date().optional().nullable().typeError('Format tanggal tidak valid.'),
+    tanggal_selesai_kontrak: Yup.date().optional().nullable().typeError('Format tanggal tidak valid.')
+      .when('tanggal_mulai_kontrak', (tanggal_mulai_kontrak, schema) => {
+          return tanggal_mulai_kontrak ? schema.min(Yup.ref('tanggal_mulai_kontrak'), 'Tgl selesai tidak boleh sebelum tgl mulai') : schema;
+      }),
+    status_menikah: Yup.string().optional(),
+    kode_dokter_bpjs: Yup.string().optional(),
+  });
 
   useEffect(() => {
     if (initialData) {
@@ -75,12 +75,12 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
         kota_kabupaten: initialData.kota_kabupaten || '',
         kecamatan: initialData.kecamatan || '',
         kelurahan: initialData.kelurahan || '',
-        detail_alamat: initialData.detail_alamat || '',
+        alamat: initialData.alamat || '',
         username: initialData.username || '',
         email: initialData.email || '',
-        password: '',
+        password: null,
         status: initialData.status || '',
-        tipe_karyawan: initialData.tipe || '', // Langsung string, bukan array
+        tipe_karyawan: initialData.tipe_karyawan || '', // Langsung string, bukan array
         tipe_lainnya: initialData.tipe_lainnya || '',
         tanggal_mulai_kontrak: initialData.tanggal_mulai_kontrak ? initialData.tanggal_mulai_kontrak.split('T')[0] : '',
         tanggal_selesai_kontrak: initialData.tanggal_selesai_kontrak ? initialData.tanggal_selesai_kontrak.split('T')[0] : '',
@@ -191,7 +191,6 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -201,7 +200,7 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
         dataToValidate.tipe_lainnya = '';
       }
       await karyawanFullSchema.validate(dataToValidate, { abortEarly: false });
-      if (onSubmitForm) onSubmitForm(dataToValidate);
+      if (onSubmitForm) onSubmitForm(isUpdate, dataToValidate);
     } catch (validationErrors) {
       const newErrors = {};
       validationErrors.inner.forEach(error => { newErrors[error.path] = error.message; });
@@ -446,14 +445,14 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
             <Form.Control
               as="textarea"
               rows={3}
-              name="detail_alamat"
+              name="alamat"
               placeholder="Alamat"
-              value={formData.detail_alamat}
+              value={formData.alamat}
               onChange={handleChange}
-              isInvalid={!!errors.detail_alamat}
+              isInvalid={!!errors.alamat}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.detail_alamat}
+              {errors.alamat}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -689,14 +688,28 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false 
 
       <Row className="mt-4">
         <Col className="d-flex justify-content-end">
-          <Button
-            variant="primary"
-            type="submit"
-            className="simpan-button px-4"
-            disabled={isLoading}
-          >
-            {isLoading ? "Menyimpan..." : "Simpan"}
-          </Button>
+        {
+          isUpdate ? (
+            <Button
+              variant="primary"
+              type="submit"
+              className="simpan-button px-4"
+              disabled={isLoading}
+            >
+              {isLoading ? "Update..." : "Update"}
+            </Button>
+
+          ) : (
+            <Button
+              variant="primary"
+              type="submit"
+              className="simpan-button px-4"
+              disabled={isLoading}
+            >
+              {isLoading ? "Menyimpan..." : "Simpan"}
+            </Button>
+          )
+        }
         </Col>
       </Row>
     </Form>

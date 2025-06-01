@@ -95,7 +95,7 @@ const createEmployee = async (employeeData) => {
 const updateEmployee = async (employeeId, employeeData) => {
   try {
     const response = await apiClient.put(
-      `/employees/${employeeId}`,
+      `/employee/${employeeId}`,
       employeeData
     );
     return response.data.data || response.data;

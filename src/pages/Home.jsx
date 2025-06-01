@@ -17,7 +17,9 @@ import { toast } from 'react-toastify';
 
 const Home = () => {
   const [karyawanList, setKaryawanList] = useState([]);
+  const [karyawan, setKaryawan] = useState({});
   const [loading, setLoading] = useState(true);
+  const [loadingID, setLoadingID] = useState(true);
   const [loadingSave, setLoadingSave] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
@@ -41,17 +43,25 @@ const Home = () => {
       setLoading(false);
     }
   };
-  
+
   const fetchKaryawanByID = async (id) => {
     try {
-      setLoading(true);
-      setError(null);
+      setLoadingID(true);
       const data = await employeeService.getEmployeeById(id);
-      setKaryawanList(data.data);
+      setKaryawan(data);
     } catch (err) {
-      setError(err.message);
+      toast.error(`Opps ${err}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        })
     } finally {
-      setLoading(false);
+      setLoadingID(false);
     }
   };
 
@@ -61,7 +71,42 @@ const Home = () => {
       setError(null);
       const data = await employeeService.createEmployee(params);
       if (data) {
-        toast("Berhasil menambah data", {
+        toast.success("Berhasil menambah data", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          })
+        fetchKaryawan(filter)
+      }
+    } catch (err) {
+      setError(err.message);
+      toast.error(`Opps ${err}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        })
+    } finally {
+      setLoadingSave(false);
+    }
+  };
+  
+  const editKaryawan = async (id, params) => {
+    try {
+      setLoadingSave(true);
+      setError(null);
+      const data = await employeeService.updateEmployee(id, params);
+      if (data) {
+        toast.success("Berhasil mengedit data", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -94,9 +139,6 @@ const Home = () => {
     fetchKaryawan();
   }, []);
 
-
-  // if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
-
   const handleFilterChange = (newFilter) => {
     setStatus(newFilter.toLowerCase())
 
@@ -112,12 +154,18 @@ const Home = () => {
     fetchKaryawan(filter);
   };
 
-  const handleFormSubmit = (formData) => {
-    console.log('Data dari Form Karyawan:', formData);
-    createKaryawan(formData);
+  const handleFormSubmit = (isUpdate, formData) => {
+
+    if (isUpdate) {
+      editKaryawan(karyawan.id, formData);
+    } else {
+      createKaryawan(formData);
+    }
+
   };
 
-  const handleDisplayID = () => {
+  const handleDisplayID = (id) => {
+    fetchKaryawanByID(id)
     setDisplay(true);
   }
 
@@ -206,7 +254,7 @@ const Home = () => {
                               <p className="titte-desc-1">
                                 {karyawan.nama_lengkap}
                               </p>
-                              <p className="titte-desc-2">{karyawan.email}</p>
+                              <p className="titte-desc-2">{karyawan.tipe_karyawan}</p>
                               <Badge
                                 bg={
                                   karyawan.status === "aktif"
@@ -223,7 +271,7 @@ const Home = () => {
                               <div className="button-container">
                                 <button
                                   class="simpan-button"
-                                  onClick={handleDisplayID}
+                                  onClick={e => handleDisplayID(karyawan.id)}
                                 >
                                   <FaArrowRight />
                                 </button>
@@ -247,7 +295,7 @@ const Home = () => {
                   <h5 className="card-title">FORM TAMBAH KARYAWAN</h5>
                 </div>
                 <div className="card-body-karyawan">
-                  <KaryawanFullForm onSubmitForm={handleFormSubmit} />
+                  <KaryawanFullForm onSubmitForm={handleFormSubmit} initialData={karyawan} isUpdate={karyawan.id !== undefined ? true : false} />
                 </div>
               </Card>
             )}
