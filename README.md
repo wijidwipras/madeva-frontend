@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+# Medeva Frontend - UI Manajemen Karyawan
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Antarmuka pengguna (UI) untuk mengelola data karyawan, dibangun sebagai bagian dari Tes Fullstack Developer Medeva. [cite: 2] Proyek ini dikembangkan menggunakan ReactJS. [cite: 2]
 
-## Available Scripts
+## Fitur Utama
+- Menampilkan daftar karyawan dengan fungsionalitas filter dan pencarian.
+- Formulir untuk menambah data karyawan baru.
+- Formulir untuk mengedit data karyawan yang sudah ada.
+- Implementasi dummy login untuk mengakses fitur-fitur.
+- Validasi form menggunakan Yup. [cite: 2]
+- Notifikasi menggunakan React Toastify.
 
-In the project directory, you can run:
+## Prasyarat
+- Node.js (versi 16.x atau lebih tinggi direkomendasikan)
+- npm (versi 8.x atau lebih tinggi) atau yarn
+- Backend API (Medeva Backend) harus sudah berjalan dan dapat diakses.
 
-### `npm start`
+## Instalasi
+1.  Clone repository ini:
+    ```bash
+    git clone https://github.com/wijidwipras/madeva-frontend.git
+    cd medeva-frontend
+    ```
+2.  Install dependensi:
+    ```bash
+    npm install
+    # atau
+    yarn install
+    ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Konfigurasi
+1.  Buat file `.env` di root direktori proyek (`medeva-frontend`).
+2.  Tambahkan variabel environment berikut ke file `.env`:
+    ```env
+    REACT_APP_API_BASE_URL=http://localhost:3001/api
+    ```
+    Sesuaikan URL jika backend Anda berjalan di port atau path yang berbeda.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Menjalankan Proyek
+1.  Untuk mode development:
+    ```bash
+    npm start
+    ```
+    Aplikasi akan berjalan dan terbuka otomatis di browser pada `http://localhost:3000` (default).
 
-### `npm test`
+## Struktur Folder Utama
+Proyek ini mencoba mengikuti prinsip Clean Architecture [cite: 2] dengan pemisahan sebagai berikut:
+```
+src/
+├── assets/             # Gambar, font, dll.
+├── components/         # Komponen UI reusable (common, forms, layout, ui)
+├── config/             # Konfigurasi (mis. instance Axios)
+├── constants/          # Konstanta aplikasi
+├── domains/            # Skema Yup, definisi entitas/model data frontend
+├── hooks/              # Custom React Hooks (mis. untuk state management sederhana, API calls)
+├── layouts/            # Komponen yang mendefinisikan struktur halaman utama (mis. MainLayout, AuthLayout)
+├── pages/              # Komponen yang mewakili satu halaman (mis. LoginPage, KaryawanListPage)
+├── services/           # Modul untuk interaksi API (menggunakan Axios)
+├── store/              # (Opsional, jika pakai state management seperti Redux/Zustand)
+├── styles/             # File SCSS global, variabel, mixins
+├── utils/              # Fungsi utilitas helper
+├── App.js              # Komponen utama aplikasi, routing
+├── App.scss            # Styling utama untuk App.js
+└── index.js            # Titik masuk aplikasi React
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
 
-### `npm run build`
+## Alur Kerja Otentikasi (Dummy)
+1.  Pengguna mengakses halaman `/login`.
+2.  Setelah login berhasil (menggunakan kredensial dummy dari backend), token diterima dan disimpan di `localStorage`.
+3.  Interceptor Axios otomatis menambahkan token ini ke header `Authorization` untuk setiap permintaan ke API yang dilindungi.
+4.  Rute yang dilindungi akan memeriksa keberadaan token. Jika tidak ada atau tidak valid, pengguna diarahkan kembali ke halaman login.
+5.  Logout akan menghapus token dari `localStorage`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Teknologi yang Digunakan
+- ReactJS (JavaScript) [cite: 2]
+- React Router DOM untuk navigasi.
+- Axios untuk melakukan permintaan HTTP ke backend. [cite: 2]
+- Bootstrap dan React-Bootstrap untuk komponen UI dan layout. [cite: 2]
+- SCSS untuk styling tambahan. [cite: 2]
+- Yup untuk validasi form. [cite: 2]
+- `react-toastify` untuk notifikasi toast.
+- `react-icons` untuk ikon.
