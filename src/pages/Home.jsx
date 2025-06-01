@@ -171,6 +171,7 @@ const Home = () => {
 
   const handleAddKaryawan = () => {
     setDisplay(true);
+    setKaryawan({});
   }
 
   return (

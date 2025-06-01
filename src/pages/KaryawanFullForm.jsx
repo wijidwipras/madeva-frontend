@@ -688,28 +688,14 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false,
 
       <Row className="mt-4">
         <Col className="d-flex justify-content-end">
-        {
-          isUpdate ? (
-            <Button
-              variant="primary"
-              type="submit"
-              className="simpan-button px-4"
-              disabled={isLoading}
-            >
-              {isLoading ? "Update..." : "Update"}
-            </Button>
-
-          ) : (
-            <Button
-              variant="primary"
-              type="submit"
-              className="simpan-button px-4"
-              disabled={isLoading}
-            >
-              {isLoading ? "Menyimpan..." : "Simpan"}
-            </Button>
-          )
-        }
+          <Button
+            variant="primary"
+            type="submit"
+            className="simpan-button px-4"
+            disabled={isLoading}
+          >
+            {isLoading ? "Update..." : "Update"}
+          </Button>
         </Col>
       </Row>
     </Form>
