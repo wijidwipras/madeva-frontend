@@ -1,21 +1,20 @@
 .appNavbar{
-    height: 7vh;
-    background: #ffffff;
+    height: 80px;
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    width: 100%;
 }
 
 .container-navbar{
     position: relative;
-    // border: solid;
-    .logo{
+    .logo {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        transform: translate(1050%, 13%);
-        width: fit-content;
-        font-weight: 500;
-    }
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
     .profile{
         border-radius: 99%;
     }

@@ -20,7 +20,7 @@ const Home = () => {
   const [karyawan, setKaryawan] = useState({});
   const [loading, setLoading] = useState(true);
   const [loadingID, setLoadingID] = useState(true);
-  const [loadingSave, setLoadingSave] = useState(true);
+  const [loadingSave, setLoadingSave] = useState(false);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
@@ -296,7 +296,7 @@ const Home = () => {
                   <h5 className="card-title">FORM TAMBAH KARYAWAN</h5>
                 </div>
                 <div className="card-body-karyawan">
-                  <KaryawanFullForm onSubmitForm={handleFormSubmit} initialData={karyawan} isUpdate={karyawan.id !== undefined ? true : false} />
+                  <KaryawanFullForm onSubmitForm={handleFormSubmit} initialData={karyawan} isLoading={loadingSave} isUpdate={karyawan.id !== undefined ? true : false} />
                 </div>
               </Card>
             )}

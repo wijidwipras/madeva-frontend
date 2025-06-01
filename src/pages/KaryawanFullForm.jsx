@@ -694,7 +694,7 @@ const KaryawanFullForm = ({ onSubmitForm, initialData = null, isLoading = false,
             className="simpan-button px-4"
             disabled={isLoading}
           >
-            {isLoading ? "Update..." : "Update"}
+            {isLoading ? "Menyimpan..." : "Simpan"}
           </Button>
         </Col>
       </Row>

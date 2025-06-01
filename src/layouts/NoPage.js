@@ -1,5 +1,16 @@
+import Gambar from '../assets/404.png'
+import '../styles/NoPage.scss'
+
 const NoPage = () => {
-    return <h1>404</h1>;
+    return (
+      <div className='noPage'>
+        <img
+            src={Gambar}
+            height="400"
+            alt="Medeva Logo"
+            />
+      </div>
+    );
   };
   
   export default NoPage;
