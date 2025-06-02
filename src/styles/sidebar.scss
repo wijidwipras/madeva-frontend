@@ -1,0 +1,97 @@
+$sidebar-bg-color: #ffffff;
+$sidebar-text-color: #495057;
+$sidebar-icon-color: #6c757d;
+$sidebar-active-bg-color: #e9ecef;
+$sidebar-active-text-color: #ffbf0f;
+$sidebar-active-icon-color: #ffbf0f;
+$sidebar-hover-bg-color: #e9ecef;
+$sidebar-padding-vertical: 1rem;
+$sidebar-padding-horizontal: 1rem;
+$nav-item-padding-vertical: 0.75rem;
+$nav-item-padding-horizontal: 1rem;
+$nav-icon-size: 1.25em;
+$nav-icon-margin-right: 0.75rem;
+$nav-label-font-size: 0.95rem;
+
+.sidebar {
+    width: fit-content;
+    min-height: 93vh;
+    background-color: $sidebar-bg-color;
+    padding-top: $sidebar-padding-vertical;
+    padding-bottom: $sidebar-padding-vertical;
+    box-shadow: 3px 0 5px rgba(0, 0, 0, 0.5);
+
+    .sidebar-nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: fit-content;
+    }
+
+    .sidebar-nav-item {
+        margin-bottom: 0.25rem;
+
+        .sidebar-nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: $nav-item-padding-vertical $nav-item-padding-horizontal;
+            text-decoration: none;
+            color: $sidebar-text-color;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+            &:hover {
+                background-color: $sidebar-hover-bg-color;
+                color: $sidebar-active-text-color;
+
+                .sidebar-nav-icon {
+                    color: $sidebar-active-icon-color;
+                }
+            }
+
+            .sidebar-nav-icon {
+                font-size: $nav-icon-size;
+                color: $sidebar-icon-color;
+                min-width: 25px;
+                text-align: center;
+                transition: color 0.2s ease-in-out;
+            }
+
+            .sidebar-nav-label {
+                font-size: $nav-label-font-size;
+                font-weight: 500;
+                font-size: 12px;
+            }
+        }
+
+
+        &.active {
+            .sidebar-nav-link {
+                background-color: $sidebar-active-bg-color;
+                color: $sidebar-active-text-color;
+                font-weight: 600;
+
+                .sidebar-nav-icon {
+                    color: $sidebar-active-icon-color;
+                }
+            }
+        }
+    }
+}
+
+// @media (max-width: 768px) {
+//   .sidebar {
+//     width: 80px; // Sidebar menjadi lebih kecil di layar mobile
+//     .sidebar-nav-label {
+//       display: none; // Sembunyikan label, hanya tampilkan ikon
+//     }
+//     .sidebar-nav-link {
+//       justify-content: center; // Pusatkan ikon
+//     }
+//     .sidebar-nav-icon {
+//       margin-right: 0;
+//       font-size: 1.5em; // Ikon bisa sedikit lebih besar
+//     }
+//   }
+// }
