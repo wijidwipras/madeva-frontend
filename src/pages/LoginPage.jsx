@@ -1,4 +1,5 @@
 import { useRef, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -6,15 +7,17 @@ import { ChevronRight } from 'lucide-react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { Button } from '../components/ui/Button'
 import { InputField } from '../components/ui/InputField'
+import { useAuth } from '../hooks/useAuth'
 
 const loginSchema = yup.object({
-  klinikId: yup.string().required('Klinik ID wajib diisi'),
   userId: yup.string().required('User ID wajib diisi'),
   password: yup.string().required('Password wajib diisi'),
 })
 
 export default function LoginPage() {
   const recaptchaRef = useRef(null)
+  const navigate = useNavigate()
+  const { login } = useAuth()
 
   const {
     control,
@@ -39,17 +42,17 @@ export default function LoginPage() {
       }
 
       try {
-        // TODO: Ganti dengan API call ke backend
-        console.log('Login data:', { ...data, recaptchaToken: token })
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-        // Reset reCAPTCHA setelah submit sukses
+        await login(data.userId, data.password, token)
         recaptchaRef.current?.reset()
+        navigate('/')
       } catch (err) {
-        console.error('Login error:', err)
         recaptchaRef.current?.reset()
+        const message =
+          err.response?.data?.error || 'Terjadi kesalahan. Silakan coba lagi.'
+        setError('root', { type: 'manual', message })
       }
     },
-    [setError]
+    [setError, login, navigate]
   )
 
   const handleFormSubmit = useCallback(
@@ -98,14 +101,6 @@ export default function LoginPage() {
         {/* Login Form */}
         <form onSubmit={handleFormSubmit} className="space-y-6">
           <InputField
-            name="klinikId"
-            control={control}
-            label="Klinik ID"
-            placeholder="Masukkan Klinik ID"
-            required
-          />
-
-          <InputField
             name="userId"
             control={control}
             label="User ID"
@@ -149,6 +144,13 @@ export default function LoginPage() {
               Lupa Password?
             </button>
           </div>
+
+          {/* Error message */}
+          {errors.root?.message && (
+            <p className="text-sm text-red-600 text-center">
+              {errors.root.message}
+            </p>
+          )}
 
           {/* Submit Button */}
           <div className="pt-1">
