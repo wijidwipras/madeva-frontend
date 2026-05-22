@@ -70,7 +70,7 @@ export function InputField({
                 aria-invalid={hasError}
                 aria-describedby={describedBy}
                 className={cn(
-                  'w-full border rounded-lg px-4 py-3 text-base text-gray-900 placeholder-gray-400 transition-colors duration-200 focus:outline-none focus:ring-2',
+                  'w-full border rounded-md px-4 py-2.5 text-base text-gray-900 placeholder-gray-400 transition-colors duration-200 focus:outline-none focus:ring-2',
                   hasError
                     ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
                     : 'border-gray-300 focus:ring-primary focus:border-primary',

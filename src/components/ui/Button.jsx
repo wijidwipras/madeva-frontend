@@ -36,7 +36,7 @@ export function Button({
 
   const variants = {
     primary:
-      'bg-primary text-white hover:bg-primary-dark focus:ring-2 focus:ring-primary focus:ring-offset-2',
+      'bg-gradient-primary text-white focus:ring-2 focus:ring-primary focus:ring-offset-2',
     secondary:
       'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-2 focus:ring-gray-400',
     outline:
@@ -48,9 +48,9 @@ export function Button({
   }
 
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm rounded-lg gap-1.5',
-    md: 'px-4 py-2.5 text-base rounded-xl gap-2',
-    lg: 'px-6 py-3 text-lg rounded-2xl gap-2',
+    sm: 'px-3 py-1.5 text-sm rounded-md gap-1.5',
+    md: 'px-4 py-2.5 text-base rounded-lg gap-2',
+    lg: 'px-5 py-2.5 text-lg rounded-lg gap-2',
   }
 
   const stateStyles =

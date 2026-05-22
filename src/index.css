@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #2563eb;
-  --color-primary-dark: #1d4ed8;
+  --color-primary: #3B9FFF;
+  --color-primary-dark: #2D96FF;
+}
+
+/* Gradient background for primary buttons */
+.bg-gradient-primary {
+  background: linear-gradient(180deg, #52A8FE 0%, #2D96FF 100%);
+}
+
+.bg-gradient-primary:hover {
+  background: linear-gradient(180deg, #2D96FF 0%, #1a7fd9 100%);
 }
