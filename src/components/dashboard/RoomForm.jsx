@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Home } from 'lucide-react'
 import { Button } from '../ui/Button'
@@ -6,6 +6,7 @@ import { InputField } from '../ui/InputField'
 import { Select } from '../ui/Select'
 import { Checkbox } from '../ui/Checkbox'
 import { Radio } from '../ui/Radio'
+import { Modal } from '../ui/Modal'
 
 const usiaOptions = [
   { value: 'Semua', label: 'Semua' },
@@ -74,6 +75,7 @@ export function RoomForm({ onSubmit, onCancel, initialData, isLoading, kelasOpti
   })
 
   const is_active = watch('is_active')
+  const [showActiveModal, setShowActiveModal] = useState(false)
 
   useEffect(() => {
     if (initialData) {
@@ -87,8 +89,9 @@ export function RoomForm({ onSubmit, onCancel, initialData, isLoading, kelasOpti
     onSubmit(data)
   }
 
-  const toggleActive = () => {
+  const confirmToggleActive = () => {
     setValue('is_active', !is_active, { shouldDirty: true })
+    setShowActiveModal(false)
   }
 
   return (
@@ -105,7 +108,7 @@ export function RoomForm({ onSubmit, onCancel, initialData, isLoading, kelasOpti
         </div>
         <button
           type="button"
-          onClick={toggleActive}
+          onClick={() => setShowActiveModal(true)}
           className={`h-[42px] px-4 border rounded-md flex items-center gap-2.5 text-sm font-medium transition-colors ${
             is_active
               ? 'border-green-300 bg-green-50 text-green-700 hover:bg-green-100'
@@ -211,6 +214,27 @@ export function RoomForm({ onSubmit, onCancel, initialData, isLoading, kelasOpti
           Simpan
         </Button>
       </div>
+
+      {/* Active Confirmation Modal */}
+      <Modal
+        isOpen={showActiveModal}
+        onClose={() => setShowActiveModal(false)}
+        title={is_active ? 'Nonaktifkan Ruangan?' : 'Aktifkan Ruangan?'}
+      >
+        <p className="text-gray-600 mb-5">
+          {is_active
+            ? 'Apakah Anda yakin ingin menonaktifkan ruangan ini? Ruangan yang dinonaktifkan tidak akan tampil di daftar.'
+            : 'Apakah Anda yakin ingin mengaktifkan ruangan ini?'}
+        </p>
+        <div className="flex justify-end gap-3">
+          <Button variant="outline" onClick={() => setShowActiveModal(false)}>
+            Batal
+          </Button>
+          <Button onClick={confirmToggleActive}>
+            Ya
+          </Button>
+        </div>
+      </Modal>
     </form>
   )
 }
