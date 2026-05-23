@@ -100,6 +100,13 @@ export function DashboardPage() {
     setSelectedRoom(null)
   }
 
+  const handleToggleStatus = async (id) => {
+    const updated = await kategoriRuanganService.toggleStatus(id)
+    toast.success(`Ruangan berhasil ${updated.is_active ? 'diaktifkan' : 'dinonaktifkan'}!`)
+    fetchRooms(meta.page, searchQuery)
+    return updated
+  }
+
   const handleSubmit = async (data) => {
     setIsSubmitting(true)
     try {
@@ -243,6 +250,7 @@ export function DashboardPage() {
             <RoomForm
               onSubmit={handleSubmit}
               onCancel={handleCancel}
+              onToggleStatus={handleToggleStatus}
               initialData={selectedRoom}
               isLoading={isSubmitting}
               kelasOptions={kelasOptions}

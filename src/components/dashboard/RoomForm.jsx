@@ -69,13 +69,14 @@ const defaultValues = {
   is_active: true,
 }
 
-export function RoomForm({ onSubmit, onCancel, initialData, isLoading, kelasOptions = [] }) {
+export function RoomForm({ onSubmit, onCancel, onToggleStatus, initialData, isLoading, kelasOptions = [] }) {
   const { control, handleSubmit, reset, watch, setValue } = useForm({
     defaultValues: mapApiToForm(initialData) || defaultValues,
   })
 
   const is_active = watch('is_active')
   const [showActiveModal, setShowActiveModal] = useState(false)
+  const [isToggling, setIsToggling] = useState(false)
 
   useEffect(() => {
     if (initialData) {
@@ -89,9 +90,18 @@ export function RoomForm({ onSubmit, onCancel, initialData, isLoading, kelasOpti
     onSubmit(data)
   }
 
-  const confirmToggleActive = () => {
-    setValue('is_active', !is_active, { shouldDirty: true })
-    setShowActiveModal(false)
+  const confirmToggleActive = async () => {
+    if (!initialData?.id) return
+    setIsToggling(true)
+    try {
+      const updated = await onToggleStatus(initialData.id)
+      setValue('is_active', updated.is_active, { shouldDirty: false })
+    } catch {
+      // error handled by parent toast
+    } finally {
+      setIsToggling(false)
+      setShowActiveModal(false)
+    }
   }
 
   return (
@@ -237,9 +247,10 @@ export function RoomForm({ onSubmit, onCancel, initialData, isLoading, kelasOpti
           <button
             type="button"
             onClick={confirmToggleActive}
-            className="px-5 py-2.5 rounded-lg bg-[#4a9dff] text-white text-sm font-semibold shadow-[0_4px_12px_rgba(74,157,255,.25)] hover:bg-[#3a8df0] transition-colors"
+            disabled={isToggling}
+            className="px-5 py-2.5 rounded-lg bg-[#4a9dff] text-white text-sm font-semibold shadow-[0_4px_12px_rgba(74,157,255,.25)] hover:bg-[#3a8df0] transition-colors disabled:opacity-50"
           >
-            Ya
+            {isToggling ? 'Memproses...' : 'Ya'}
           </button>
         </div>
       </Modal>
