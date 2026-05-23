@@ -28,25 +28,24 @@ export function RoomTable({ rooms, onSelect, selectedId }) {
               <td className="px-4 py-4 border-b border-r border-gray-300">
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-base font-bold text-gray-900">
-                    {room.name}
+                    {room.nama_ruangan}
                   </span>
-                  <Badge variant={room.isAktif ? 'success' : 'warning'}>
-                    {room.isAktif ? 'Aktif' : 'Non-Aktif'}
+                  <Badge variant={room.is_active ? 'success' : 'warning'}>
+                    {room.is_active ? 'Aktif' : 'Non-Aktif'}
                   </Badge>
                 </div>
                 <div className="text-sm text-gray-500 leading-relaxed">
-                  Kapasitas: {room.kapasitas}<br />
-                  Kelas: {room.kelas}<br />
-                  Jenis Kelamin: {room.jenisKelamin}<br />
-                  Usia: {room.usia}<br />
-                  Penyakit: {room.penyakit}
+                  Kelas: {room.nama_kelas}<br />
+                  Jenis Kelamin: {room.jenis_kelamin || '-'}<br />
+                  Usia: {room.usia || '-'}<br />
+                  Penyakit: {room.penyakit || '-'}
                 </div>
               </td>
               <td className="px-4 py-4 border-b border-gray-300 text-center">
                 <button
                   onClick={() => onSelect(room)}
                   className="w-[42px] h-[42px] rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors shadow-[0_4px_10px_rgba(46,155,255,.3)]"
-                  aria-label={`Pilih ${room.name}`}
+                  aria-label={`Pilih ${room.nama_ruangan}`}
                 >
                   <ArrowRight size={18} />
                 </button>
