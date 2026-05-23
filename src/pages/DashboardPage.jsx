@@ -146,17 +146,19 @@ export function DashboardPage() {
         </Card>
 
         {/* Right Panel */}
-        <Card className="p-5 min-h-[720px]">
           {selectedRoom ? (
-            <RoomForm
-              onSubmit={handleSubmit}
-              initialData={selectedRoom}
-              isLoading={isSubmitting}
-            />
+            <Card className="p-5 min-h-[720px]">
+              <RoomForm
+                onSubmit={handleSubmit}
+                initialData={selectedRoom}
+                isLoading={isSubmitting}
+                />
+            </Card>
           ) : (
-            <EmptyState />
+            <Card className="p-5 h-[500px]">
+              <EmptyState />
+            </Card>
           )}
-        </Card>
       </div>
     </DashboardLayout>
   )
