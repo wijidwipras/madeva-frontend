@@ -40,15 +40,18 @@ export function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [kelasOptions, setKelasOptions] = useState([])
   const [showForm, setShowForm] = useState(false)
+  const [error, setError] = useState(null)
 
   const fetchRooms = useCallback(async (page = 1, search = '') => {
     setIsLoading(true)
+    setError(null)
     try {
       const result = await kategoriRuanganService.getAll({ page, perPage: 5, search })
       setRooms(result.data)
       setMeta(result.meta)
     } catch (err) {
       console.error('Gagal memuat data ruangan:', err)
+      setError('Gagal memuat data. Silakan coba lagi.')
     } finally {
       setIsLoading(false)
     }
@@ -64,9 +67,8 @@ export function DashboardPage() {
   }, [])
 
   useEffect(() => {
-    fetchRooms(1, '')
     fetchKelas()
-  }, [fetchRooms, fetchKelas])
+  }, [fetchKelas])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -182,6 +184,13 @@ export function DashboardPage() {
           {isLoading ? (
             <div className="flex items-center justify-center py-20 text-gray-400">
               Memuat data...
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <p className="text-red-500 mb-2">{error}</p>
+              <Button onClick={() => fetchRooms(1, searchQuery)} variant="outline" size="sm">
+                Coba Lagi
+              </Button>
             </div>
           ) : (
             <>
