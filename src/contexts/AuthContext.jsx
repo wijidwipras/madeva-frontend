@@ -29,8 +29,8 @@ export function AuthProvider({ children }) {
       })
   }, [token])
 
-  const login = useCallback(async (username, password, recaptchaToken) => {
-    const data = await authService.login({ username, password, recaptchaToken })
+  const login = useCallback(async (kodeAuth, username, password, recaptchaToken) => {
+    const data = await authService.login({ kodeAuth, username, password, recaptchaToken })
     localStorage.setItem('token', data.token)
     setToken(data.token)
     setUser(data.user)

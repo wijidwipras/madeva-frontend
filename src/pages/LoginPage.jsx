@@ -11,6 +11,7 @@ import { InputField } from '../components/ui/InputField'
 import { useAuth } from '../hooks/useAuth'
 
 const loginSchema = yup.object({
+  kodeAuth: yup.string().required('Kode Klinik wajib diisi'),
   userId: yup.string().required('User ID wajib diisi'),
   password: yup.string().required('Password wajib diisi'),
 })
@@ -28,6 +29,11 @@ export default function LoginPage() {
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(loginSchema),
+    defaultValues: {
+      kodeAuth: '',
+      userId: '',
+      password: '',
+    },
   })
 
   const onSubmit = useCallback(
@@ -43,7 +49,7 @@ export default function LoginPage() {
       }
 
       try {
-        await login(data.userId, data.password, token)
+        await login(data.kodeAuth, data.userId, data.password, token)
         recaptchaRef.current?.reset()
         toast.success('Login berhasil!')
         navigate('/')
@@ -102,6 +108,14 @@ export default function LoginPage() {
 
         {/* Login Form */}
         <form onSubmit={handleFormSubmit} className="space-y-6">
+          <InputField
+            name="kodeAuth"
+            control={control}
+            label="Kode Klinik"
+            placeholder="Masukkan Kode Klinik"
+            required
+          />
+
           <InputField
             name="userId"
             control={control}
