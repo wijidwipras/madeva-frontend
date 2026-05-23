@@ -50,6 +50,7 @@ function mapApiToForm(apiData) {
     nama_ruangan: apiData.nama_ruangan || '',
     id_kelas_ruangan: apiData.id_kelas_ruangan || '',
     harga_ruangan: apiData.harga_ruangan || '',
+    jumlah_kamar: apiData.jumlah_kamar || '',
     fasilitas_ruangan: Array.isArray(apiData.fasilitas_ruangan) ? apiData.fasilitas_ruangan : [],
     jenis_kelamin: apiData.jenis_kelamin || '',
     usia: apiData.usia || '',
@@ -62,6 +63,7 @@ const defaultValues = {
   nama_ruangan: '',
   id_kelas_ruangan: '',
   harga_ruangan: '',
+  jumlah_kamar: '',
   fasilitas_ruangan: [],
   jenis_kelamin: '',
   usia: '',
@@ -149,6 +151,14 @@ export function RoomForm({ onSubmit, onCancel, onToggleStatus, initialData, isLo
             options={kelasOptions.map(k => ({ value: k.id, label: k.nama_kelas }))}
             placeholder="Select..."
             rules={{ required: 'Kelas wajib dipilih' }}
+            required
+          />
+          <InputField
+            name="jumlah_kamar"
+            control={control}
+            label="Jumlah Kamar"
+            placeholder="0"
+            rules={{ required: 'Jumlah kamar wajib diisi' }}
             required
           />
           <InputField

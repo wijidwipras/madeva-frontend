@@ -17,7 +17,7 @@ const sidebarMenuItems = [
     href: '/',
     isActive: true,
     children: [
-      { icon: DocumentTextIcon, label: 'Pengaturan Ruangan', href: '/rooms' },
+      { icon: DocumentTextIcon, label: 'Pengaturan Ruangan', href: '/rooms', isActive: true },
       { icon: DocumentTextIcon, label: 'Pengaturan Kelas', href: '/classes' },
     ],
   },

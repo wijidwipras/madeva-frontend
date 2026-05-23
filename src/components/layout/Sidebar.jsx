@@ -58,9 +58,14 @@ export function Sidebar({ menuItems = [], isOpen, onClose }) {
                         <a
                           key={child.href}
                           href={child.href}
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className={cn(
+                            'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
+                            child.isActive
+                              ? 'text-primary font-semibold bg-primary/5'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          )}
                         >
-                          <ChildIcon className="w-4 h-4 text-gray-400" />
+                          <ChildIcon className={cn('w-4 h-4', child.isActive ? 'text-primary' : 'text-gray-400')} />
                           {child.label}
                         </a>
                       )
