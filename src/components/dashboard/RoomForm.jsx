@@ -227,7 +227,12 @@ export function RoomForm({ onSubmit, onCancel, onToggleStatus, initialData, isLo
 
       {/* Footer */}
       <div className="flex justify-end gap-3 pt-2">
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          className="!border-red-400 !text-red-500 hover:!bg-red-50"
+        >
           Batal
         </Button>
         <Button type="submit" isLoading={isLoading}>
