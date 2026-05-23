@@ -1,17 +1,17 @@
 import { cn } from '../../lib/cn'
 
 const variants = {
-  success: 'bg-green-100 text-green-700',
-  danger: 'bg-red-100 text-red-700',
-  warning: 'bg-yellow-100 text-yellow-700',
-  info: 'bg-blue-100 text-blue-700',
+  success: 'bg-[#55b96b] text-white',
+  danger: 'bg-red-500 text-white',
+  warning: 'bg-[#d3a132] text-white',
+  info: 'bg-blue-500 text-white',
 }
 
 export function Badge({ variant = 'info', children, className }) {
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+        'inline-flex items-center px-[7px] py-[3px] rounded text-[10px] font-medium',
         variants[variant],
         className
       )}

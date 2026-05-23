@@ -1,7 +1,7 @@
-export function Footer({ copyrightText = 'Medeva Mint' }) {
+export function Footer({ copyrightText = 'PT Medeva Multi Talenta' }) {
   return (
-    <footer className="border-t border-gray-200 bg-white py-4 px-6 text-center text-sm text-gray-500">
-      &copy; {new Date().getFullYear()} {copyrightText}. All rights reserved.
+    <footer className="bg-white h-[58px] rounded flex items-center justify-center text-sm text-gray-500">
+      2026 &copy; {copyrightText}
     </footer>
   )
 }

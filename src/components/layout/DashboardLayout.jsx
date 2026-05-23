@@ -12,7 +12,7 @@ export function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f4f4f4]">
       <Navbar
         clinicName={clinicName}
         user={user}
@@ -25,9 +25,11 @@ export function DashboardLayout({
         onClose={() => setSidebarOpen(false)}
       />
 
-      <main className="pt-16 md:ml-[280px] min-h-screen flex flex-col">
-        <div className="flex-1 p-6">{children}</div>
-        <Footer copyrightText="Madeva Mint" />
+      <main className="pt-16 lg:ml-[95px] min-h-screen flex flex-col">
+        <div className="flex-1 p-3.5">{children}</div>
+        <div className="px-3.5 pb-3.5">
+          <Footer copyrightText="PT Medeva Multi Talenta" />
+        </div>
       </main>
     </div>
   )

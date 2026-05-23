@@ -1,48 +1,73 @@
-import { X } from 'lucide-react'
+import { useState } from 'react'
+import { X, FileText } from 'lucide-react'
 import { IconButton } from '../ui/IconButton'
 import { cn } from '../../lib/cn'
 
 export function Sidebar({ menuItems = [], isOpen, onClose }) {
+  const [hoveredMenu, setHoveredMenu] = useState(null)
+
   return (
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
         className={cn(
-          'fixed top-16 left-0 bottom-0 w-[280px] bg-white border-r border-gray-200 z-40 transition-transform duration-200',
-          'md:translate-x-0',
-          isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+          'fixed top-16 left-0 bottom-0 w-[95px] bg-white z-40 transition-transform duration-200',
+          'lg:translate-x-0',
+          isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
-        <div className="flex items-center justify-between p-4 md:hidden">
-          <span className="text-sm font-semibold text-gray-500">Menu</span>
+        <div className="flex items-center justify-end p-4 lg:hidden">
           <IconButton icon={X} onClick={onClose} size="sm" aria-label="Close menu" />
         </div>
 
-        <div className="h-px bg-[#11C5C0] mx-4 md:hidden" />
-
-        <nav className="flex flex-col gap-1 p-2">
+        <nav className="flex flex-col items-center gap-2 pt-2">
           {menuItems.map((item) => {
             const Icon = item.icon
+            const hasChildren = item.children && item.children.length > 0
             return (
-              <a
+              <div
                 key={item.href}
-                href={item.href}
-                className={cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                  item.isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                )}
+                className="relative w-full"
+                onMouseEnter={() => hasChildren && setHoveredMenu(item.href)}
+                onMouseLeave={() => hasChildren && setHoveredMenu(null)}
               >
-                {Icon && <Icon size={20} />}
-                {item.label}
-              </a>
+                <a
+                  href={item.href}
+                  className={cn(
+                    'flex flex-col items-center gap-1.5 w-full py-3 text-xs font-medium transition-colors',
+                    item.isActive
+                      ? 'text-primary border-l-4 border-primary bg-primary/5'
+                      : 'text-gray-500 hover:text-gray-900 border-l-4 border-transparent'
+                  )}
+                >
+                  {Icon && <Icon size={28} />}
+                  <span className="truncate px-2">{item.label}</span>
+                </a>
+
+                {hasChildren && hoveredMenu === item.href && (
+                  <div className="absolute left-full top-0 w-56 bg-white shadow-[2px_2px_8px_rgba(0,0,0,0.12)] border border-gray-200 border-l-0 py-2 z-50">
+                    {item.children.map((child) => {
+                      const ChildIcon = child.icon || FileText
+                      return (
+                        <a
+                          key={child.href}
+                          href={child.href}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <ChildIcon size={16} className="text-gray-400" />
+                          {child.label}
+                        </a>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             )
           })}
         </nav>

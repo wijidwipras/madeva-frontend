@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #3B9FFF;
-  --color-primary-dark: #2D96FF;
+  --color-primary: #2e9bff;
+  --color-primary-dark: #1a8af0;
 }
 
 /* Gradient background for primary buttons */
 .bg-gradient-primary {
-  background: linear-gradient(180deg, #52A8FE 0%, #2D96FF 100%);
+  background: linear-gradient(180deg, #52A8FE 0%, #2e9bff 100%);
 }
 
 .bg-gradient-primary:hover {
-  background: linear-gradient(180deg, #2D96FF 0%, #1a7fd9 100%);
+  background: linear-gradient(180deg, #2e9bff 0%, #1a8af0 100%);
 }
