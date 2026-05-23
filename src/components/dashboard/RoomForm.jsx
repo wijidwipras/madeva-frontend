@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
-import { Home } from 'lucide-react'
+import { InboxIcon } from '@heroicons/react/24/outline'
 import { Button } from '../ui/Button'
 import { InputField } from '../ui/InputField'
 import { Select } from '../ui/Select'
@@ -125,7 +125,7 @@ export function RoomForm({ onSubmit, onCancel, onToggleStatus, initialData, isLo
               : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'
           }`}
         >
-          <Home size={16} />
+          <InboxIcon className="w-4 h-4" />
           {is_active ? 'Aktif' : 'Aktifkan'}
         </button>
       </div>
