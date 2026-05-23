@@ -219,20 +219,28 @@ export function RoomForm({ onSubmit, onCancel, initialData, isLoading, kelasOpti
       <Modal
         isOpen={showActiveModal}
         onClose={() => setShowActiveModal(false)}
-        title={is_active ? 'Nonaktifkan Ruangan?' : 'Aktifkan Ruangan?'}
+        title="KONFIRMASI STATUS"
       >
         <p className="text-gray-600 mb-5">
-          {is_active
-            ? 'Apakah Anda yakin ingin menonaktifkan ruangan ini? Ruangan yang dinonaktifkan tidak akan tampil di daftar.'
-            : 'Apakah Anda yakin ingin mengaktifkan ruangan ini?'}
+          Apakah Anda yakin ingin{' '}
+          <strong>{is_active ? 'nonaktifkan' : 'aktifkan'}</strong>{' '}
+          kategori ?
         </p>
         <div className="flex justify-end gap-3">
-          <Button variant="outline" onClick={() => setShowActiveModal(false)}>
+          <button
+            type="button"
+            onClick={() => setShowActiveModal(false)}
+            className="px-5 py-2.5 rounded-lg border border-red-400 text-red-500 text-sm font-semibold hover:bg-red-50 transition-colors"
+          >
             Batal
-          </Button>
-          <Button onClick={confirmToggleActive}>
+          </button>
+          <button
+            type="button"
+            onClick={confirmToggleActive}
+            className="px-5 py-2.5 rounded-lg bg-[#4a9dff] text-white text-sm font-semibold shadow-[0_4px_12px_rgba(74,157,255,.25)] hover:bg-[#3a8df0] transition-colors"
+          >
             Ya
-          </Button>
+          </button>
         </div>
       </Modal>
     </form>
