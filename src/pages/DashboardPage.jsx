@@ -6,6 +6,7 @@ import { RoomForm } from '../components/dashboard/RoomForm'
 import { EmptyState } from '../components/dashboard/EmptyState'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
+import { Modal } from '../components/ui/Modal'
 import { useAuth } from '../hooks/useAuth'
 import { kategoriRuanganService } from '../services/kategoriRuangan.service'
 
@@ -41,6 +42,7 @@ export function DashboardPage() {
   const [kelasOptions, setKelasOptions] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [error, setError] = useState(null)
+  const [modalError, setModalError] = useState(null)
 
   const fetchRooms = useCallback(async (page = 1, search = '') => {
     setIsLoading(true)
@@ -107,7 +109,7 @@ export function DashboardPage() {
       fetchRooms(meta.page, searchQuery)
     } catch (err) {
       const message = err.response?.data?.error || 'Terjadi kesalahan'
-      alert(message)
+      setModalError(message)
     } finally {
       setIsSubmitting(false)
     }
@@ -244,6 +246,13 @@ export function DashboardPage() {
           </Card>
         )}
       </div>
+
+      <Modal isOpen={!!modalError} onClose={() => setModalError(null)} title="Terjadi Kesalahan">
+        <p className="text-gray-600 mb-4">{modalError}</p>
+        <div className="flex justify-end">
+          <Button onClick={() => setModalError(null)} size="sm">Tutup</Button>
+        </div>
+      </Modal>
     </DashboardLayout>
   )
 }
