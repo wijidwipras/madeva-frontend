@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import RequireAuth from './components/RequireAuth'
 import LoginPage from './pages/LoginPage'
+import { DashboardPage } from './pages/DashboardPage'
 
 function App() {
   return (
@@ -13,11 +14,7 @@ function App() {
             path="/"
             element={
               <RequireAuth>
-                <div className="min-h-screen flex items-center justify-center">
-                  <h1 className="text-2xl font-semibold text-gray-700">
-                    Dashboard
-                  </h1>
-                </div>
+                <DashboardPage />
               </RequireAuth>
             }
           />
