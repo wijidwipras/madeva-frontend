@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form'
-import { Check } from 'lucide-react'
+import { CheckIcon } from '@heroicons/react/24/outline'
 import { cn } from '../../lib/cn'
 
 const gridColumns = {
@@ -68,7 +68,7 @@ export function Checkbox({
                         disabled && 'bg-gray-100 border-gray-200'
                       )}
                     >
-                      {isChecked && <Check size={14} className="text-white" />}
+                      {isChecked && <CheckIcon className="w-3.5 h-3.5 text-white" />}
                     </button>
                     <span className="text-sm text-gray-700">{opt.label}</span>
                   </label>

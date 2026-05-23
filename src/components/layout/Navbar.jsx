@@ -1,4 +1,4 @@
-import { Menu, Bell } from 'lucide-react'
+import { Bars3Icon, BellIcon } from '@heroicons/react/24/outline'
 import { Avatar } from '../ui/Avatar'
 import { DropdownMenu } from '../ui/DropdownMenu'
 import { IconButton } from '../ui/IconButton'
@@ -8,7 +8,7 @@ export function Navbar({ clinicName, onMenuToggle, user }) {
     <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center justify-between px-4 md:px-6">
       <div className="flex items-center gap-3">
         <IconButton
-          icon={Menu}
+          icon={Bars3Icon}
           className="md:hidden"
           onClick={onMenuToggle}
           aria-label="Toggle menu"
@@ -46,7 +46,7 @@ export function Navbar({ clinicName, onMenuToggle, user }) {
       <div className="flex items-center gap-3">
         {user && (
           <>
-            <IconButton icon={Bell} size="sm" aria-label="Notifikasi" />
+            <IconButton icon={BellIcon} size="sm" aria-label="Notifikasi" />
 
             <DropdownMenu
               align="right"

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, FileText } from 'lucide-react'
+import { XMarkIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import { IconButton } from '../ui/IconButton'
 import { cn } from '../../lib/cn'
 
@@ -23,7 +23,7 @@ export function Sidebar({ menuItems = [], isOpen, onClose }) {
         )}
       >
         <div className="flex items-center justify-end p-4 lg:hidden">
-          <IconButton icon={X} onClick={onClose} size="sm" aria-label="Close menu" />
+          <IconButton icon={XMarkIcon} onClick={onClose} size="sm" aria-label="Close menu" />
         </div>
 
         <nav className="flex flex-col items-center gap-2 pt-2">
@@ -46,21 +46,21 @@ export function Sidebar({ menuItems = [], isOpen, onClose }) {
                       : 'text-gray-500 hover:text-gray-900 border-l-4 border-transparent'
                   )}
                 >
-                  {Icon && <Icon size={28} />}
+                  {Icon && <Icon className="w-7 h-7" />}
                   <span className="truncate px-2">{item.label}</span>
                 </a>
 
                 {hasChildren && hoveredMenu === item.href && (
                   <div className="absolute left-full top-0 w-56 bg-white shadow-[2px_2px_8px_rgba(0,0,0,0.12)] border border-gray-200 border-l-0 py-2 z-50">
                     {item.children.map((child) => {
-                      const ChildIcon = child.icon || FileText
+                      const ChildIcon = child.icon || DocumentTextIcon
                       return (
                         <a
                           key={child.href}
                           href={child.href}
                           className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         >
-                          <ChildIcon size={16} className="text-gray-400" />
+                          <ChildIcon className="w-4 h-4 text-gray-400" />
                           {child.label}
                         </a>
                       )

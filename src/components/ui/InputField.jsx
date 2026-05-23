@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Controller } from 'react-hook-form'
-import { Eye, EyeOff, AlertCircle } from 'lucide-react'
+import { EyeIcon, EyeSlashIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { cn } from '../../lib/cn'
 
 /**
@@ -96,9 +96,9 @@ export function InputField({
                   aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
                 >
                   {showPassword ? (
-                    <EyeOff size={20} />
+                    <EyeSlashIcon className="w-5 h-5" />
                   ) : (
-                    <Eye size={20} />
+                    <EyeIcon className="w-5 h-5" />
                   )}
                 </button>
               )}
@@ -109,7 +109,7 @@ export function InputField({
                 id={errorId}
                 className="mt-1.5 text-sm text-red-600 flex items-center gap-1"
               >
-                <AlertCircle size={14} />
+                <ExclamationCircleIcon className="w-3.5 h-3.5" />
                 {fieldState.error.message}
               </p>
             ) : helperText ? (

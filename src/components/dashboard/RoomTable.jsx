@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import { Badge } from '../ui/Badge'
 
 export function RoomTable({ rooms, onSelect, selectedId }) {
@@ -47,7 +47,7 @@ export function RoomTable({ rooms, onSelect, selectedId }) {
                   className="w-[42px] h-[42px] rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors shadow-[0_4px_10px_rgba(46,155,255,.3)]"
                   aria-label={`Pilih ${room.nama_ruangan}`}
                 >
-                  <ArrowRight size={18} />
+                  <ArrowRightIcon className="w-[18px] h-[18px]" />
                 </button>
               </td>
             </tr>

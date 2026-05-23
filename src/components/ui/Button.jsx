@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { cn } from '../../lib/cn'
 
 /**
@@ -75,7 +75,7 @@ export function Button({
       {...props}
     >
       {isLoading && (
-        <Loader2 className="animate-spin" size={size === 'sm' ? 16 : 20} />
+        <ArrowPathIcon className={cn('animate-spin', size === 'sm' ? 'w-4 h-4' : 'w-5 h-5')} />
       )}
       {!isLoading && leftIcon}
       <span className={isLoading ? 'opacity-0' : ''}>{children}</span>

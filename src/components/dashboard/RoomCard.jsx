@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from 'lucide-react'
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { Card } from '../ui/Card'
 import { Badge } from '../ui/Badge'
 import { IconButton } from '../ui/IconButton'
@@ -40,7 +40,7 @@ export function RoomCard({ room, isSelected, onSelect, onEdit, onDelete }) {
 
       <div className="flex gap-2 pt-3 border-t border-gray-100">
         <IconButton
-          icon={Pencil}
+          icon={PencilIcon}
           size="sm"
           onClick={(e) => {
             e.stopPropagation()
@@ -49,7 +49,7 @@ export function RoomCard({ room, isSelected, onSelect, onEdit, onDelete }) {
           aria-label="Edit ruangan"
         />
         <IconButton
-          icon={Trash2}
+          icon={TrashIcon}
           size="sm"
           variant="danger"
           onClick={(e) => {

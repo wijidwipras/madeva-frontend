@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { cn } from '../../lib/cn'
 
 export function Select({
@@ -61,9 +61,8 @@ export function Select({
                 ))}
               </select>
 
-              <ChevronDown
-                size={20}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+              <ChevronDownIcon
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
               />
             </div>
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Building2, FileText, Search, Plus, ChevronLeft, ChevronRight } from 'lucide-react'
+import { BuildingOffice2Icon, DocumentTextIcon, MagnifyingGlassIcon, PlusIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../components/layout/DashboardLayout'
 import { RoomTable } from '../components/dashboard/RoomTable'
@@ -12,13 +12,13 @@ import { kategoriRuanganService } from '../services/kategoriRuangan.service'
 
 const sidebarMenuItems = [
   {
-    icon: Building2,
+    icon: BuildingOffice2Icon,
     label: 'Rawat Inap',
     href: '/',
     isActive: true,
     children: [
-      { icon: FileText, label: 'Pengaturan Ruangan', href: '/rooms' },
-      { icon: FileText, label: 'Pengaturan Kelas', href: '/classes' },
+      { icon: DocumentTextIcon, label: 'Pengaturan Ruangan', href: '/rooms' },
+      { icon: DocumentTextIcon, label: 'Pengaturan Kelas', href: '/classes' },
     ],
   },
 ]
@@ -160,7 +160,7 @@ export function DashboardPage() {
               TAMBAH KATEGORI<br />RUANGAN
             </h2>
             {isAdmin && (
-              <Button onClick={handleCreateNew} icon={Plus}>
+              <Button onClick={handleCreateNew} icon={PlusIcon}>
                 Tambah
               </Button>
             )}
@@ -193,7 +193,7 @@ export function DashboardPage() {
               className="flex-1 border border-gray-200 rounded-l-lg px-3 py-2.5 text-sm outline-none focus:border-primary"
             />
             <button className="w-10 flex items-center justify-center border border-primary rounded-r-lg text-primary hover:bg-primary/5 transition-colors">
-              <Search size={18} />
+              <MagnifyingGlassIcon className="w-[18px] h-[18px]" />
             </button>
           </div>
 
@@ -228,14 +228,14 @@ export function DashboardPage() {
                       disabled={meta.page <= 1}
                       className="p-1.5 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                      <ChevronLeft size={16} />
+                      <ChevronLeftIcon className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handlePageChange(meta.page + 1)}
                       disabled={meta.page >= meta.totalPages}
                       className="p-1.5 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                      <ChevronRight size={16} />
+                      <ChevronRightIcon className="w-4 h-4" />
                     </button>
                   </div>
                 </div>

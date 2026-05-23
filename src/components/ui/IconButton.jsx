@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { cn } from '../../lib/cn'
 
 const variants = {
@@ -39,9 +39,9 @@ export function IconButton({
       )}
     >
       {isLoading ? (
-        <Loader2 size={size === 'sm' ? 16 : 20} className="animate-spin" />
+        <ArrowPathIcon className={cn('animate-spin', size === 'sm' ? 'w-4 h-4' : 'w-5 h-5')} />
       ) : (
-        <Icon size={size === 'sm' ? 16 : 20} />
+        <Icon className={size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'} />
       )}
     </button>
   )

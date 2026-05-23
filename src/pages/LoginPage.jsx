@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { toast } from 'react-toastify'
 import { Button } from '../components/ui/Button'
@@ -168,7 +168,7 @@ export default function LoginPage() {
               onClick={() => console.log('Apotek login clicked')}
             >
               Masuk ke medeva apotek
-              <ChevronRight size={16} />
+              <ChevronRightIcon className="w-4 h-4" />
             </button>
           </div>
         </form>
