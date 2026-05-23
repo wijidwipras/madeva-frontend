@@ -29,4 +29,9 @@ export const kategoriRuanganService = {
     const { data } = await apiClient.get('/kategori-ruangan/kelas-ruangan')
     return data
   },
+
+  async toggleStatus(id) {
+    const { data } = await apiClient.patch(`/kategori-ruangan/${id}/status`)
+    return data
+  },
 }
