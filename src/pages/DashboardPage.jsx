@@ -1,11 +1,13 @@
-import { useState } from 'react'
-import { Building2, FileText, Search, Plus } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Building2, FileText, Search, Plus, ChevronLeft, ChevronRight } from 'lucide-react'
 import { DashboardLayout } from '../components/layout/DashboardLayout'
 import { RoomTable } from '../components/dashboard/RoomTable'
 import { RoomForm } from '../components/dashboard/RoomForm'
 import { EmptyState } from '../components/dashboard/EmptyState'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
+import { useAuth } from '../hooks/useAuth'
+import { kategoriRuanganService } from '../services/kategoriRuangan.service'
 
 const sidebarMenuItems = [
   {
@@ -20,39 +22,6 @@ const sidebarMenuItems = [
   },
 ]
 
-const initialRooms = [
-  {
-    id: 1,
-    name: 'Ruangan ABC',
-    kelas: 'Jingga',
-    kapasitas: 3,
-    jenisKelamin: 'Perempuan',
-    usia: 'Dewasa',
-    penyakit: 'Non-Infeksius',
-    isAktif: false,
-  },
-  {
-    id: 2,
-    name: 'Rafflesia 1',
-    kelas: 'Ocean Blue',
-    kapasitas: 13,
-    jenisKelamin: 'Semua',
-    usia: 'Anak',
-    penyakit: 'Infeksius',
-    isAktif: true,
-  },
-  {
-    id: 3,
-    name: 'Macaca Fascicularis',
-    kelas: 'Clover',
-    kapasitas: 6,
-    jenisKelamin: 'Laki-laki',
-    usia: 'Semua',
-    penyakit: 'Non-Infeksius',
-    isAktif: true,
-  },
-]
-
 const tabs = [
   { key: 'semua', label: 'SEMUA' },
   { key: 'aktif', label: 'AKTIF' },
@@ -60,39 +29,107 @@ const tabs = [
 ]
 
 export function DashboardPage() {
-  const [rooms] = useState(initialRooms)
+  const { user, logout, isAdmin } = useAuth()
+
+  const [rooms, setRooms] = useState([])
+  const [meta, setMeta] = useState({ page: 1, perPage: 5, total: 0, totalPages: 1 })
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [activeTab, setActiveTab] = useState('semua')
   const [searchQuery, setSearchQuery] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [kelasOptions, setKelasOptions] = useState([])
+  const [showForm, setShowForm] = useState(false)
 
-  const user = {
-    name: 'Tenaga Medis 197',
-    role: 'Dokter, Purchasing, Manager',
-    onProfile: () => console.log('Profile clicked'),
-    onLogout: () => console.log('Logout clicked'),
-  }
+  const fetchRooms = useCallback(async (page = 1, search = '') => {
+    setIsLoading(true)
+    try {
+      const result = await kategoriRuanganService.getAll({ page, perPage: 5, search })
+      setRooms(result.data)
+      setMeta(result.meta)
+    } catch (err) {
+      console.error('Gagal memuat data ruangan:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  const fetchKelas = useCallback(async () => {
+    try {
+      const data = await kategoriRuanganService.getKelasRuangan()
+      setKelasOptions(data)
+    } catch (err) {
+      console.error('Gagal memuat kelas ruangan:', err)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchRooms(1, '')
+    fetchKelas()
+  }, [fetchRooms, fetchKelas])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchRooms(1, searchQuery)
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [searchQuery, fetchRooms])
 
   const filteredRooms = rooms.filter((room) => {
-    const matchesTab =
-      activeTab === 'semua' ||
-      (activeTab === 'aktif' && room.isAktif) ||
-      (activeTab === 'non-aktif' && !room.isAktif)
-    const matchesSearch = room.name.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesTab && matchesSearch
+    if (activeTab === 'semua') return true
+    if (activeTab === 'aktif') return room.is_active
+    if (activeTab === 'non-aktif') return !room.is_active
+    return true
   })
 
-  const handleSubmit = (data) => {
-    setIsSubmitting(true)
-    console.log('Form submitted:', data)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setSelectedRoom(null)
-    }, 1000)
+  const handleSelectRoom = (room) => {
+    setSelectedRoom(room)
+    setShowForm(true)
   }
 
+  const handleCreateNew = () => {
+    setSelectedRoom(null)
+    setShowForm(true)
+  }
+
+  const handleSubmit = async (data) => {
+    setIsSubmitting(true)
+    try {
+      if (selectedRoom?.id) {
+        await kategoriRuanganService.update(selectedRoom.id, data)
+      } else {
+        await kategoriRuanganService.create(data)
+      }
+      setShowForm(false)
+      setSelectedRoom(null)
+      fetchRooms(meta.page, searchQuery)
+    } catch (err) {
+      const message = err.response?.data?.error || 'Terjadi kesalahan'
+      alert(message)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= meta.totalPages) {
+      fetchRooms(newPage, searchQuery)
+    }
+  }
+
+  const userData = user
+    ? { name: user.nama_lengkap || user.username, role: user.is_admin ? 'Admin' : 'User' }
+    : { name: 'Guest', role: '' }
+
   return (
-    <DashboardLayout sidebarMenuItems={sidebarMenuItems} user={user}>
+    <DashboardLayout
+      sidebarMenuItems={sidebarMenuItems}
+      user={{
+        ...userData,
+        onProfile: () => {},
+        onLogout: logout,
+      }}
+    >
       <div className="text-sm text-gray-400 mb-4">
         Rawat Inap / Pengaturan Kategori Ruangan
       </div>
@@ -104,7 +141,11 @@ export function DashboardPage() {
             <h2 className="text-xl font-bold text-gray-900 leading-snug">
               TAMBAH KATEGORI<br />RUANGAN
             </h2>
-            <Button>Tambah</Button>
+            {isAdmin && (
+              <Button onClick={handleCreateNew} icon={Plus}>
+                Tambah
+              </Button>
+            )}
           </div>
 
           <div className="text-sm font-semibold text-gray-700 mb-2.5">Status</div>
@@ -138,27 +179,61 @@ export function DashboardPage() {
             </button>
           </div>
 
-          <RoomTable
-            rooms={filteredRooms}
-            onSelect={setSelectedRoom}
-            selectedId={selectedRoom?.id}
-          />
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20 text-gray-400">
+              Memuat data...
+            </div>
+          ) : (
+            <>
+              <RoomTable
+                rooms={filteredRooms}
+                onSelect={handleSelectRoom}
+                selectedId={selectedRoom?.id}
+              />
+
+              {/* Pagination */}
+              {meta.totalPages > 1 && (
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                  <span className="text-sm text-gray-500">
+                    Halaman {meta.page} dari {meta.totalPages} ({meta.total} data)
+                  </span>
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => handlePageChange(meta.page - 1)}
+                      disabled={meta.page <= 1}
+                      className="p-1.5 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    <button
+                      onClick={() => handlePageChange(meta.page + 1)}
+                      disabled={meta.page >= meta.totalPages}
+                      className="p-1.5 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </Card>
 
         {/* Right Panel */}
-          {selectedRoom ? (
-            <Card className="p-5 min-h-[720px]">
-              <RoomForm
-                onSubmit={handleSubmit}
-                initialData={selectedRoom}
-                isLoading={isSubmitting}
-                />
-            </Card>
-          ) : (
-            <Card className="p-5 h-[500px]">
-              <EmptyState />
-            </Card>
-          )}
+        {showForm ? (
+          <Card className="p-5 min-h-[720px]">
+            <RoomForm
+              onSubmit={handleSubmit}
+              initialData={selectedRoom}
+              isLoading={isSubmitting}
+              kelasOptions={kelasOptions}
+            />
+          </Card>
+        ) : (
+          <Card className="p-5 h-[500px]">
+            <EmptyState />
+          </Card>
+        )}
       </div>
     </DashboardLayout>
   )
