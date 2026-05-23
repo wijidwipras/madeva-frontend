@@ -32,6 +32,7 @@ export function InputField({
   className,
   showPasswordToggle = false,
   required = false,
+  prefix,
 }) {
   const [showPassword, setShowPassword] = useState(false)
 
@@ -61,7 +62,12 @@ export function InputField({
               </label>
             )}
 
-            <div className="relative">
+            <div className={cn('relative flex', prefix && 'border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-primary focus-within:border-primary', prefix && hasError && 'border-red-500 focus-within:ring-red-500 focus-within:border-red-500')}>
+              {prefix && (
+                <span className="flex items-center justify-center px-3 bg-gray-50 border-r border-gray-300 text-sm text-gray-500 rounded-l-md select-none">
+                  {prefix}
+                </span>
+              )}
               <input
                 id={name}
                 type={inputType}
@@ -70,10 +76,11 @@ export function InputField({
                 aria-invalid={hasError}
                 aria-describedby={describedBy}
                 className={cn(
-                  'w-full border rounded-md px-4 py-2.5 text-base text-gray-900 placeholder-gray-400 transition-colors duration-200 focus:outline-none focus:ring-2',
-                  hasError
+                  'w-full px-4 py-2.5 text-base text-gray-900 placeholder-gray-400 transition-colors duration-200 focus:outline-none',
+                  prefix ? 'border-0 rounded-r-md focus:ring-0' : 'border rounded-md focus:ring-2',
+                  !prefix && (hasError
                     ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                    : 'border-gray-300 focus:ring-primary focus:border-primary',
+                    : 'border-gray-300 focus:ring-primary focus:border-primary'),
                   disabled && 'bg-gray-100 cursor-not-allowed opacity-60',
                   isPassword && showPasswordToggle && 'pr-12'
                 )}

@@ -2,6 +2,12 @@ import { Controller } from 'react-hook-form'
 import { Check } from 'lucide-react'
 import { cn } from '../../lib/cn'
 
+const gridColumns = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-3',
+  4: 'grid-cols-4',
+}
+
 export function Checkbox({
   name,
   control,
@@ -10,6 +16,7 @@ export function Checkbox({
   rules,
   disabled = false,
   className,
+  columns,
 }) {
   return (
     <Controller
@@ -36,7 +43,7 @@ export function Checkbox({
               </label>
             )}
 
-            <div className="flex flex-wrap gap-3">
+            <div className={columns ? cn('grid gap-3', gridColumns[columns]) : 'flex flex-wrap gap-3'}>
               {options.map((opt) => {
                 const isChecked = selectedValues.includes(opt.value)
                 return (

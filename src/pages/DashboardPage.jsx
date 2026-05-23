@@ -95,6 +95,11 @@ export function DashboardPage() {
     setShowForm(true)
   }
 
+  const handleCancel = () => {
+    setShowForm(false)
+    setSelectedRoom(null)
+  }
+
   const handleSubmit = async (data) => {
     setIsSubmitting(true)
     try {
@@ -237,6 +242,7 @@ export function DashboardPage() {
           <Card className="p-5 min-h-[720px]">
             <RoomForm
               onSubmit={handleSubmit}
+              onCancel={handleCancel}
               initialData={selectedRoom}
               isLoading={isSubmitting}
               kelasOptions={kelasOptions}
