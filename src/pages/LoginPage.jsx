@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { ChevronRight } from 'lucide-react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import { toast } from 'react-toastify'
 import { Button } from '../components/ui/Button'
 import { InputField } from '../components/ui/InputField'
 import { useAuth } from '../hooks/useAuth'
@@ -44,12 +45,13 @@ export default function LoginPage() {
       try {
         await login(data.userId, data.password, token)
         recaptchaRef.current?.reset()
+        toast.success('Login berhasil!')
         navigate('/')
       } catch (err) {
         recaptchaRef.current?.reset()
         const message =
           err.response?.data?.error || 'Terjadi kesalahan. Silakan coba lagi.'
-        setError('root', { type: 'manual', message })
+        toast.error(message)
       }
     },
     [setError, login, navigate]
@@ -144,13 +146,6 @@ export default function LoginPage() {
               Lupa Password?
             </button>
           </div>
-
-          {/* Error message */}
-          {errors.root?.message && (
-            <p className="text-sm text-red-600 text-center">
-              {errors.root.message}
-            </p>
-          )}
 
           {/* Submit Button */}
           <div className="pt-1">

@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Building2, FileText, Search, Plus, ChevronLeft, ChevronRight } from 'lucide-react'
+import { toast } from 'react-toastify'
 import { DashboardLayout } from '../components/layout/DashboardLayout'
 import { RoomTable } from '../components/dashboard/RoomTable'
 import { RoomForm } from '../components/dashboard/RoomForm'
 import { EmptyState } from '../components/dashboard/EmptyState'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
-import { Modal } from '../components/ui/Modal'
 import { useAuth } from '../hooks/useAuth'
 import { kategoriRuanganService } from '../services/kategoriRuangan.service'
 
@@ -42,7 +42,6 @@ export function DashboardPage() {
   const [kelasOptions, setKelasOptions] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [error, setError] = useState(null)
-  const [modalError, setModalError] = useState(null)
 
   const fetchRooms = useCallback(async (page = 1, search = '') => {
     setIsLoading(true)
@@ -101,15 +100,18 @@ export function DashboardPage() {
     try {
       if (selectedRoom?.id) {
         await kategoriRuanganService.update(selectedRoom.id, data)
+        toast.success('Ruangan berhasil diperbarui!')
+        fetchRooms(meta.page, searchQuery)
       } else {
         await kategoriRuanganService.create(data)
+        toast.success('Ruangan berhasil ditambahkan!')
+        setShowForm(false)
+        setSelectedRoom(null)
+        fetchRooms(meta.page, searchQuery)
       }
-      setShowForm(false)
-      setSelectedRoom(null)
-      fetchRooms(meta.page, searchQuery)
     } catch (err) {
       const message = err.response?.data?.error || 'Terjadi kesalahan'
-      setModalError(message)
+      toast.error(message)
     } finally {
       setIsSubmitting(false)
     }
@@ -246,13 +248,6 @@ export function DashboardPage() {
           </Card>
         )}
       </div>
-
-      <Modal isOpen={!!modalError} onClose={() => setModalError(null)} title="Terjadi Kesalahan">
-        <p className="text-gray-600 mb-4">{modalError}</p>
-        <div className="flex justify-end">
-          <Button onClick={() => setModalError(null)} size="sm">Tutup</Button>
-        </div>
-      </Modal>
     </DashboardLayout>
   )
 }
